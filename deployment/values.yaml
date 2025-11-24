@@ -1,0 +1,35 @@
+replicaCount: 1
+
+image:
+  repository: feelfeel200088/autismal
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+env:
+  # If you prefer to provide DISCORD_TOKEN directly via values (not recommended),
+  # set provideToken: true and put discordToken below.
+  provideToken: false
+  discordToken: "REPLACE_ME_MABYE"
+
+secret:
+  create: true
+  name: autismal-secret
+  discordTokenKey: DISCORD_TOKEN
+
+readinessProbe:
+  enabled: false
+
+livenessProbe:
+  enabled: false
+
+nodeSelector: {}
+tolerations: []
+affinity: {}

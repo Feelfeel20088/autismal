@@ -1,0 +1,10 @@
+apiVersion: v2
+name: autismal
+description: A small Helm chart for the autismal Discord bot
+type: application
+version: 0.1.0
+appVersion: "latest"
+keywords:
+  - discord
+  - bot
+home: "https://github.com/Feelfeel20088/autismal"
