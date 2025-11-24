@@ -1,7 +1,6 @@
 use std::env;
 
 use poise::serenity_prelude::{self as serenity, GatewayIntents};
-use serde::Deserialize;
 
 const KAHOOT_URL: &str = "https://felixhub.dev/kahootswarm";
 
