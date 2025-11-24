@@ -4,7 +4,7 @@ use crate::{
 };
 use poise::serenity_prelude::{self as serenity};
 
-/// Calculates how gay you are based on your chat history
+/// Calculates how gay you are based on your chat history (soon)
 #[poise::command(slash_command, prefix_command)]
 pub async fn gay(
     ctx: Context<'_>,

@@ -2,8 +2,6 @@ use std::env;
 
 use poise::serenity_prelude::{self as serenity, GatewayIntents};
 
-const KAHOOT_URL: &str = "https://felixhub.dev/kahootswarm";
-
 mod commands;
 mod helpers;
 mod types;
@@ -23,7 +21,7 @@ async fn main() {
                 commands::age(),
                 commands::coinflip(),
                 commands::gay(),
-                // commands::jakbot_raid()
+                commands::jakbot::jakbot_raid()
             ],
             ..Default::default()
         })
