@@ -13,22 +13,7 @@ resources:
     cpu: 100m
     memory: 128Mi
 
-env:
-  # If you prefer to provide DISCORD_TOKEN directly via values (not recommended),
-  # set provideToken: true and put discordToken below.
-  provideToken: false
-  discordToken: "REPLACE_ME_MABYE"
-
-secret:
-  create: true
-  name: autismal-secret
-  discordTokenKey: DISCORD_TOKEN
-
-readinessProbe:
-  enabled: false
-
-livenessProbe:
-  enabled: false
+secretName: autismal-discord-secret
 
 nodeSelector: {}
 tolerations: []

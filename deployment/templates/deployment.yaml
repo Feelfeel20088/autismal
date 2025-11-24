@@ -9,8 +9,8 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/instance: {{ .Release.Name }}
       app.kubernetes.io/name: {{ .Chart.Name }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
@@ -21,22 +21,14 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - containerPort: {{ .Values.service.targetPort }}
           env:
             - name: RUST_LOG
               value: "info"
-          # Use secret for discord token by default
-          {{- if .Values.secret.create }}
-            - name: {{ .Values.secret.discordTokenKey }}
+            - name: DISCORD_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.secret.name }}
-                  key: {{ .Values.secret.discordTokenKey }}
-          {{- else if and .Values.env.provideToken .Values.env.discordToken }}
-            - name: {{ .Values.secret.discordTokenKey }}
-              value: "{{ .Values.env.discordToken }}"
-          {{- end }}
+                  name: {{ .Values.secretName }}
+                  key: DISCORD_TOKEN
           resources:
             limits:
               cpu: "{{ .Values.resources.limits.cpu }}"
@@ -44,27 +36,6 @@ spec:
             requests:
               cpu: "{{ .Values.resources.requests.cpu }}"
               memory: "{{ .Values.resources.requests.memory }}"
-          {{- if .Values.livenessProbe.httpGet.enabled }}
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.livenessProbe.httpGet.path }}
-              port: {{ .Values.livenessProbe.httpGet.port }}
-            initialDelaySeconds: {{ .Values.livenessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.livenessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.livenessProbe.timeoutSeconds }}
-            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
-          {{- end }}
-          {{- if .Values.readinessProbe.httpGet.enabled }}
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.readinessProbe.httpGet.path }}
-              port: {{ .Values.readinessProbe.httpGet.port }}
-            initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
-            periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
-            timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
-            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
-          {{- end }}
-
-      nodeSelector: {{ toYaml .Values.nodeSelector | nindent 6 }}
-      tolerations: {{ toYaml .Values.tolerations | nindent 6 }}
-      affinity: {{ toYaml .Values.affinity | nindent 6 }}
+      nodeSelector: {{ if .Values.nodeSelector }}{{ toYaml .Values.nodeSelector | nindent 6 }}{{ else }}{}{{ end }}
+      tolerations: {{ if .Values.tolerations }}{{ toYaml .Values.tolerations | nindent 6 }}{{ else }}[]{{ end }}
+      affinity: {{ if .Values.affinity }}{{ toYaml .Values.affinity | nindent 6 }}{{ else }}{}{{ end }}
